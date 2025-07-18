@@ -1,0 +1,43 @@
+{
+  "name": "gitosys-worker",
+  "version": "1.0.0",
+  "description": "Open source AI-powered code analysis and bug fixing worker",
+  "main": "index.js",
+  "keywords": ["ai", "code-analysis", "bug-fixing", "openai", "claude", "vector-embeddings", "postgresql", "redis"],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/gitosys-worker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/gitosys-worker/issues"
+  },
+  "homepage": "https://github.com/yourusername/gitosys-worker#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^0.0.54",
+    "@ai-sdk/openai": "^0.0.66",
+    "@octokit/rest": "^20.1.2",
+    "@prisma/client": "^5.22.0",
+    "ai": "^3.4.32",
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.4.1",
+    "openai": "^4.67.1",
+    "prisma": "^5.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

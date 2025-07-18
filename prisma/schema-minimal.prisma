@@ -1,0 +1,70 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+// Core models needed for AI worker functionality
+model Project {
+  id                String                 @id @default(cuid())
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  name              String
+  githubUrl         String?
+  
+  // Relations
+  sourceCodeEmbedding SourceCodeEmbedding[]
+  fixJobs             FixJob[]
+  questions           Question[]
+}
+
+model SourceCodeEmbedding {
+  id               String                 @id @default(cuid())
+  summaryEmbedding Unsupported("vector(1536)")?
+  sourceCode       String
+  fileName         String
+  summary          String
+  projectId        String
+  project          Project                @relation(fields: [projectId], references: [id])
+}
+
+model FixJob {
+  id        String        @id @default(cuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  status    FixJobStatus  @default(PENDING)
+  
+  // Job data
+  question    String
+  summary     String?
+  result      Json?
+  
+  // Relations
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Question {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  question           String
+  answer             String
+  filesReferences    Json?
+  
+  // Relations
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+enum FixJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
